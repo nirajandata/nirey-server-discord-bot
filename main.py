@@ -34,5 +34,17 @@ async def unban(k, *, member):
     await k.send(f"{user} have been unbanned sucessfully")
     
   return
-        
+
+@client.command(aliases=["kharani"])
+async def clear(k,clr=10):
+    clr=clr+1 #including our message
+    if (clr<=101):
+        await k.channel.purge(limit=clr)
+        await k.send(f"Removed {clr-1} messages")
+    
+    else:
+        await k.send("You can only clear upto 100 messages at a time")
+
+
+
 client.run(auth_key)
