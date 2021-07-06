@@ -1,31 +1,38 @@
 import discord
+from discord.ext import commands
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
 auth_key=os.environ["TOKEN"]
-client = discord.Client()
+client = commands.Bot(command_prefix="-")
 
 @client.event
 async def on_ready():
-    print('Running the app {0.user}'.format(client))
+ print("{0.user} is started".format(client))
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
+@client.command()
+async def kick(k,user:discord.Member,*,because=None):
+ await user.kick(reason=because)
+ await k.send(f"{user.mention} is kicked from the server")
 
-    if message.content.startswith('-mr'):
-        await message.channel.send("Morning Nirey's server members")
+@client.command(aliases=["bodhi_ban"])
+async def ban(k,user:discord.Member,*,because=None):
+ await user.ban(reason=because)
+ await k.send(f"{user.mention} is banned from the server")
 
-    if message.content.startswith('-help'):
-        await message.channel.send("this bot is just on testing phase")
-@client.event
-async def on_member_join(member):
-    await member.create_dm()
-    await member.dm_channel.send(
-        f'Hi {member.name}, welcome to my Discord server!'
-    )
+@client.command()
+async def unban(k, *, member):
+  banned_users = await k.guild.bans()
+  member_name, member_discriminator = member.split('#')
 
+  for ban_entry in banned_users:
+    user = ban_entry.user
+  
+  if (user.name, user.discriminator) == (member_name, member_discriminator):
+    await k.guild.unban(user)
+    await k.send(f"{user} have been unbanned sucessfully")
+    
+  return
+        
 client.run(auth_key)
