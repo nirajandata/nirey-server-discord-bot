@@ -1,1 +1,1 @@
-worker: python3 YOURSCRIPTNAME.py
+worker: python3 main.py
