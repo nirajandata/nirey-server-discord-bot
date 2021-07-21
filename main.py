@@ -31,7 +31,9 @@ async def messenger(message):
   if (message.author==client.user):
     return 
   if (message.channel.id==confess_id):
-    await message.channel.send(f"**`{message.content}`**")
+    embed=discord.Embed(title="Confessions",description=f"```{message.content}```", color=discord.Color.green())
+
+    await message.channel.send(embed=embed)
     await message.delete()    
 
 @commands.has_permissions(administrator=True)
