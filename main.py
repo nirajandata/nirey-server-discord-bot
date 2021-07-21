@@ -63,6 +63,10 @@ async def clear(k,clr=10):
  else:    
   await k.send("You can only clear upto 100 messages at a time")
 
+@client.command()
+async def invite(k):
+  await k.send(f"https://discord.gg/rMNGzCVQhd")
+
 @clear.error
 @kick.error
 @ban.error
