@@ -10,6 +10,7 @@ intents = discord.Intents.default()
 intents.members=True
 client = commands.Bot(command_prefix="-",intents=intents)
 
+confess_id=858306482864783390
 
 @client.event
 async def on_ready():
@@ -24,6 +25,14 @@ async def on_member_join(user):
 async def on_member_remove(user):
   channel=client.get_channel(843437199206907954)
   await channel.send(f"{user} left the server")
+
+@client.listen('on_message')
+async def messenger(message):
+  if (message.author==client.user):
+    return 
+  if (message.channel.id==confess_id):
+    await message.channel.send(f"**`{message.content}`**")
+    await message.delete()    
 
 @commands.has_permissions(administrator=True)
 @client.command()
