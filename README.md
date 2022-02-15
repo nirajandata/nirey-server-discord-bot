@@ -1,4 +1,8 @@
 # nirey-server-discord-bot
 a discord bot for my personal discord server <br>
-`i will start building it after some days`
-`link of my discord server is in my github bio in you want to join`
+
+##usage :
+`
+add discord bot authentication token in your env variable named TOKEN.
+make a config.py file and put the confess_id value and nickname(dictionary)
+`
