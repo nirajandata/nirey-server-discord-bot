@@ -1,17 +1,17 @@
 import discord
+import os
 from discord import channel
 from discord.ext import commands
-import os
-from dotenv import load_dotenv
+from pinger import pings
+auth_key=os.getenv("TOKEN")
+import config
 
-load_dotenv()
-auth_key=os.environ["TOKEN"]
 intents = discord.Intents.default()
 intents.members=True
 client = commands.Bot(command_prefix="-",intents=intents)
 
-confess_id=858306482864783390
-
+confess_id=config.confess_id
+nicknames=config.nicknames
 @client.event
 async def on_ready():
  print("{0.user} is started".format(client))
@@ -30,6 +30,14 @@ async def on_member_remove(user):
 async def messenger(message):
   if (message.author==client.user):
     return 
+  to_send = []
+  #msg=[i for i in message.content.lower().split()]
+  for username in nicknames:
+    if username in message.content.lower():
+      to_send.append(nicknames[username])
+
+  if to_send:
+    await message.channel.send('\n'.join(to_send))
   if (message.channel.id==confess_id):
     embed=discord.Embed(title="Confessions",description=f"```{message.content}```", color=discord.Color.green())
 
@@ -88,4 +96,5 @@ async def clear_error(k, error):
  if isinstance(error, commands.MissingPermissions):
   await k.send('You do not have manage_messages permssion')
 
+pings()
 client.run(auth_key)
